@@ -39,18 +39,18 @@ const AddProduct = () => {
         setValues({ ...values, [name]: value });
     };
 
-    const init = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    categories: data,
-                    formData: new FormData()
-                });
-            }
-        });
+    const init = async() => {
+        let resp = await getCategories();
+        console.log(resp);
+        if(resp.response.data.error ){
+            setValues({ ...values, error: resp.response.data.error });
+        } else {
+            setValues({
+                ...values,
+                categories: resp.data,
+                formData: new FormData()
+            });
+        }
     };
 
     useEffect(() => {

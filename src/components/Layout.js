@@ -6,7 +6,7 @@ const Layout = ({
     className,
     children
 }) => (
-    <div>
+    <div className="container-fluid">
         <div className="jumbotron">
             <h2>{title}</h2>
             <p className="lead">{description}</p>

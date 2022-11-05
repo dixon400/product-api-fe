@@ -2,13 +2,15 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { Navigate  } from 'react-router-dom';
 import axios from 'axios'
 import ProductCard from '../components/ProductCard';
+import Layout from "../components/Layout";
+import { getProducts } from '../api/apiAdmin';
 
 const Home = () => {
-    const [authenticated, setauthenticated] = useState(localStorage.getItem("jwt") || false); 
+    const [authenticated, setauthenticated] = useState(localStorage.getItem("jwt")); 
     const [products, setProducts] = useState([])
-    const getProducts = async() => {
+    const getAllProducts = async() => {
        try {
-        const resp = await axios.get("http://127.0.0.1:8000/api/products")
+        const resp = getProducts();
         console.log({response: resp.data});
         return await setProducts(resp.data)
        } catch (error) {
@@ -31,15 +33,22 @@ const Home = () => {
  console.log({products: products});
 
   return (
-    <div>
-        <ul>
-        {products && products.map(product=>(
-            <li>
-                <ProductCard product={product}/>
-            </li> 
-            ))}
-    </ul>
-    </div>
+    <Fragment>
+       <Layout
+        title="Producte App"
+        description="View And Create Products"
+        className="container-fluid"
+        >
+            <h2 className="mb-4">Products</h2>
+            <div className="row">
+                {products && products.map((product, i) => (
+                    <div key={i} className="col-4 mb-3">
+                        <ProductCard product={product}/>
+                    </div>
+                ))}
+            </div>
+         </Layout>
+    </Fragment>
     
   )
 }

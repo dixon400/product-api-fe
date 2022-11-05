@@ -4,7 +4,7 @@ import axios from 'axios'
 export const signin = async email => {
     try {
         return await axios.post(`${API}login`,
-        {email}, {withCredentials: true})
+        {email}, {withCredentials: true})   
     } catch (e) {
         console.log({ e }); 
         return e};
@@ -20,13 +20,13 @@ export const authenticate = (data) => {
 export const signout = (next) => {
     console.log(next);
     if (typeof window !== 'undefined') {
+        next();
         localStorage.removeItem('jwt');
         return fetch(`${API}logout`, {
             method: 'DELETE'
         })
             .then(response => {
                 console.log('signout', response);
-                next()
             })
             .catch(err => console.log(err));
     }

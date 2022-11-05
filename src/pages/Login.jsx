@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Navigate } from "react-router-dom";
+import React, { useState , useEffect} from 'react';
+import { useNavigate, Navigate, redirect} from "react-router-dom";
 import Layout from '../components/Layout';
 import { signin,authenticate, isAuthenticated } from '../auth';
+
 const Login = () => {
     const [email, setEmail] = useState("");
-    const [authenticated, setAuthenticated] = useState(localStorage.getItem("authenticated") || false);
     const [error, setError] = useState('')
     const navigate = useNavigate();
     const handleSubmit = async(e) => {
@@ -12,15 +12,21 @@ const Login = () => {
         const resp = await signin(email);
         console.log({resp})
         if(resp && resp.data){
-            localStorage.setItem("authenticated", true);
             authenticate(resp.data);
-            navigate('/');
+            navigate("/");
             
         }
         else {
             setError(resp.response.data.error);   
         }
+
     }
+    const redirectUser = () => {
+        if(isAuthenticated()){
+            return <Navigate to = "/" />
+        }
+    }
+    
 
     const signInForm = () => (
         <form>
@@ -41,11 +47,7 @@ const Login = () => {
         </div>
     );
 
-    const redirectUser = () => {
-        if(isAuthenticated()){
-            return <Navigate to = "/" />
-        }
-    }
+    
     return (
 
         <Layout

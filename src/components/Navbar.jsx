@@ -1,9 +1,8 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { NavLink, useNavigate } from "react-router-dom";
 import { isAuthenticated, signout } from '../auth';
 
 const Navbar = () => {
-    const [authenticated, setAuthenticated] = useState(localStorage.getItem("authenticated") || false);
     const navigate = useNavigate()
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -19,11 +18,7 @@ const Navbar = () => {
                     {isAuthenticated() &&
                         (
                             <Fragment>
-                                <li className="nav-item">
-                                    <NavLink to="products" className="nav-link">
-                                        Products
-                                    </NavLink>
-                                </li>
+                               
                                 <li className="nav-item">
                                     <NavLink to="addproduct" className="nav-link">
                                         Add product
@@ -37,15 +32,10 @@ const Navbar = () => {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to="rentalLog" className="nav-link">
-                                        Rental Log
-                                    </NavLink>
-                                </li>
-                                <li className="nav-item">
                                     <span className="nav-link"
                                         style={{ cursor: 'pointer', color: '#ffffff' }}
                                         onClick={() =>
-                                            signout(()=>navigate("/"))}>
+                                            signout(()=>navigate("/login"))}>
                                         Signout
                                     </span>
                                 </li>

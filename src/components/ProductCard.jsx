@@ -1,14 +1,21 @@
 import axios from 'axios';
-import { NavItem } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { deleteProduct } from '../api/apiAdmin';
 
-const ProductCard =({product})=> {
-  const {id, name, price, brand, description} = product
+const ProductCard = ({ product }) => {
+  const { id, name, price, brand, description } = product
+  const navigate = useNavigate()
 
-  const productPage = async() => {
-    let resp = await axios.get(`127.0.0.1:8000/api/product/${id}`)
+  const deleteItem = async () => {
+    let resp = await deleteProduct(id)
+    if(resp.status == 204){
+      return navigate("/");
+    }
+    
   }
+
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Header>
@@ -18,9 +25,11 @@ const ProductCard =({product})=> {
         <Card.Title>{price}</Card.Title>
         <Card.Text>
           {brand}
+        </Card.Text>
+        <Card.Text>
           {description}
         </Card.Text>
-        <Button variant="primary" type='button'>Go somewhere</Button>
+        <Button variant="danger" type='button' onClick={deleteItem}> Delete</Button>
       </Card.Body>
     </Card>
   );
